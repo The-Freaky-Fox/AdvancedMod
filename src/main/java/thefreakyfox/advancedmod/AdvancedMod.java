@@ -24,16 +24,19 @@ public class AdvancedMod {
 	@EventHandler
 	public void preInit( FMLPreInitializationEvent event ) {
 		ModBlocks.init();
+		proxy.preInit();
 		LogHelper.info( "Pre-initialisation complete!" );
 	}
 
 	@EventHandler
 	public void init( FMLInitializationEvent event ) {
+		proxy.init();
 		LogHelper.info( "Initialisation complete!" );
 	}
 
 	@EventHandler
 	public void postInit( FMLPostInitializationEvent event ) {
+		proxy.postInit();
 		LogHelper.info( "Post-initialisation complete!" );
 	}
 
