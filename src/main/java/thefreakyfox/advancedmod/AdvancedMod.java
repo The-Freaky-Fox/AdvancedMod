@@ -1,5 +1,6 @@
 package thefreakyfox.advancedmod;
 
+import thefreakyfox.advancedmod.init.ModBlocks;
 import thefreakyfox.advancedmod.proxy.CommonProxy;
 import thefreakyfox.advancedmod.reference.Reference;
 import thefreakyfox.advancedmod.util.LogHelper;
@@ -22,6 +23,7 @@ public class AdvancedMod {
 
 	@EventHandler
 	public void preInit( FMLPreInitializationEvent event ) {
+		ModBlocks.init();
 		LogHelper.info( "Pre-initialisation complete!" );
 	}
 
