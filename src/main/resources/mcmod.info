@@ -1,0 +1,21 @@
+[
+    {
+        "modid": "AdvancedMod",
+        "name": "Advanced Mod",
+        "description": "From MineMaarten's Youtube series.",
+        "version": "1.0",
+        "mcversion": "1.7.10",
+        "url": "",
+        "updateUrl": "",
+        "authorList": [
+            "The_Freaky_Fox"
+        ],
+        "credits": "Thanks to Pahimar, Vswe and MineMaarten for awesome modding tutorials",
+        "logoFile": "",
+        "screenshots": [
+        ],
+        "parent": "",
+        "dependencies": [
+        ]
+    }
+]
