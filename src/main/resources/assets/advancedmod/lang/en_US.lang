@@ -1,2 +1,7 @@
 # Blocks
 tile.dutchFlag.name=Dutch Flag
+
+# Keybindings
+keys.advancedmod.category=Advanced Mod
+keys.advancedmod.explode=Explode
+keys.advancedmod.explodebig=Big Explosion
