@@ -1,5 +1,7 @@
 package thefreakyfox.advancedmod.proxy;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 import thefreakyfox.advancedmod.client.handler.KeyInputEventHandler;
 import thefreakyfox.advancedmod.client.settings.KeyBindings;
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -16,7 +18,7 @@ public class ClientProxy extends CommonProxy {
 
 	private void registerKeyBindings() {
 		FMLCommonHandler.instance().bus().register( new KeyInputEventHandler() );
-		for ( KeyBindings key : KeyBindings.values() ) {
+		for ( final KeyBindings key : KeyBindings.values() ) {
 			ClientRegistry.registerKeyBinding( key.getKeybind() );
 		}
 	}
@@ -30,6 +32,11 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public Side getSide() {
 		return Side.CLIENT;
+	}
+
+	@Override
+	public EntityPlayer getClientPlayer() {
+		return Minecraft.getMinecraft().thePlayer;
 	}
 
 }

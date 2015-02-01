@@ -1,5 +1,6 @@
 # Blocks
 tile.dutchFlag.name=Dutch Flag
+tile.camoMine.name=Camo Mine
 
 # Keybindings
 keys.advancedmod.category=Advanced Mod

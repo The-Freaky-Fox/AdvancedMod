@@ -6,7 +6,14 @@ public class Names {
 	public static final class Blocks {
 
 		public static final String DUTCH_FLAG = "dutchFlag";
+		public static final String CAMO_MINE = "camoMine";
 	}
+
+	public static final class TileEntities {
+
+		public static final String CAMO_MINE = Reference.MOD_ID + ":camoMine";
+	}
+
 
 	public static final class Keys {
 
