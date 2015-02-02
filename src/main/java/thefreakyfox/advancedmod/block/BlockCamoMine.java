@@ -1,7 +1,6 @@
 package thefreakyfox.advancedmod.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -9,6 +8,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import thefreakyfox.advancedmod.AdvancedMod;
+import thefreakyfox.advancedmod.GuiHandler;
 import thefreakyfox.advancedmod.reference.Names;
 import thefreakyfox.advancedmod.reference.Reference;
 import thefreakyfox.advancedmod.tileentity.TileEntityCamoMine;
@@ -33,24 +34,29 @@ public class BlockCamoMine extends BlockAdvancedModTileEntity {
 	public boolean onBlockActivated( World world, int x, int y, int z, EntityPlayer player, int side, float hitX,
 			float hitY, float hitZ ) {
 		if ( !world.isRemote ) {
-			final TileEntity te = world.getTileEntity( x, y, z );
-			if ( te instanceof TileEntityCamoMine && te != null ) {
-				final TileEntityCamoMine teMine = ( TileEntityCamoMine ) te;
-
-				if ( teMine.getCamoStack( side ) != null ) {
-					final ItemStack camoStack = teMine.getCamoStack( side );
-					teMine.setCamoStack( null, side );
-					final EntityItem itemEntity = new EntityItem( world, x, y, z, camoStack );
-					world.spawnEntityInWorld( itemEntity );
-				} else {
-					final ItemStack playerItem = player.getCurrentEquippedItem();
-					if ( playerItem != null ) {
-						final ItemStack camoStack = playerItem.splitStack( 1 );
-						teMine.setCamoStack( camoStack, side );
-					}
-				}
-			}
+			player.openGui( AdvancedMod.instance, GuiHandler.GuiIDs.CAMO_MINE.ordinal(), world, x, y, z );
 		}
+		/*
+		 * if ( !world.isRemote ) {
+		 * final TileEntity te = world.getTileEntity( x, y, z );
+		 * if ( te instanceof TileEntityCamoMine && te != null ) {
+		 * final TileEntityCamoMine teMine = ( TileEntityCamoMine ) te;
+		 * 
+		 * if ( teMine.getCamoStack( side ) != null ) {
+		 * final ItemStack camoStack = teMine.getCamoStack( side );
+		 * teMine.setCamoStack( null, side );
+		 * final EntityItem itemEntity = new EntityItem( world, x, y, z, camoStack );
+		 * world.spawnEntityInWorld( itemEntity );
+		 * } else {
+		 * final ItemStack playerItem = player.getCurrentEquippedItem();
+		 * if ( playerItem != null ) {
+		 * final ItemStack camoStack = playerItem.splitStack( 1 );
+		 * teMine.setCamoStack( camoStack, side );
+		 * }
+		 * }
+		 * }
+		 * }
+		 */
 		return true;
 	}
 

@@ -2,7 +2,6 @@ package thefreakyfox.advancedmod;
 
 import thefreakyfox.advancedmod.init.ModBlocks;
 import thefreakyfox.advancedmod.init.ModTileEntities;
-import thefreakyfox.advancedmod.network.DescriptionHandler;
 import thefreakyfox.advancedmod.network.NetworkHandler;
 import thefreakyfox.advancedmod.proxy.CommonProxy;
 import thefreakyfox.advancedmod.reference.Reference;
@@ -15,6 +14,7 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod( modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION )
@@ -33,7 +33,7 @@ public class AdvancedMod {
 		proxy.preInit();
 		GameRegistry.registerWorldGenerator( new WorldGeneratorFlag(), 0 );
 		NetworkHandler.init();
-		DescriptionHandler.init();
+		NetworkRegistry.INSTANCE.registerGuiHandler( instance, new GuiHandler() );
 		LogHelper.info( "Pre-initialisation complete!" );
 	}
 
