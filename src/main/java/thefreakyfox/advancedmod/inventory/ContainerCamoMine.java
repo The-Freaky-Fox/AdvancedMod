@@ -13,12 +13,12 @@ public class ContainerCamoMine extends ContainerAdvancedMod {
 
 	public ContainerCamoMine( InventoryPlayer playerInventory, TileEntityCamoMine te ) {
 
-		addSlotToContainer( new Slot( te, 0, 80, 58 ) );
-		addSlotToContainer( new Slot( te, 1, 80, 22 ) );
-		addSlotToContainer( new Slot( te, 2, 80, 40 ) );
-		addSlotToContainer( new Slot( te, 3, 62, 40 ) );
-		addSlotToContainer( new Slot( te, 4, 98, 40 ) );
-		addSlotToContainer( new Slot( te, 5, 102, 18 ) );
+		addSlotToContainer( new SlotCamouflage( te, 0, 80, 58 ) );
+		addSlotToContainer( new SlotCamouflage( te, 1, 80, 22 ) );
+		addSlotToContainer( new SlotCamouflage( te, 2, 80, 40 ) );
+		addSlotToContainer( new SlotCamouflage( te, 3, 62, 40 ) );
+		addSlotToContainer( new SlotCamouflage( te, 4, 98, 40 ) );
+		addSlotToContainer( new SlotCamouflage( te, 5, 102, 18 ) );
 
 		addPlayerSlots( playerInventory, 8, 84 );
 		this.te = te;
@@ -30,8 +30,45 @@ public class ContainerCamoMine extends ContainerAdvancedMod {
 	}
 
 	@Override
-	public ItemStack transferStackInSlot( EntityPlayer player, int slot ) {
-		return null;
+	public ItemStack transferStackInSlot( EntityPlayer player, int slotIndex ) {
+		ItemStack itemstack = null;
+		final Slot slot = ( Slot ) inventorySlots.get( slotIndex );
+
+		if ( slot != null && slot.getHasStack() ) {
+			final ItemStack itemstack1 = slot.getStack();
+			itemstack = itemstack1.copy();
+
+			// From here change accordingly...
+			if ( slotIndex < 6 ) {
+				if ( !mergeItemStack( itemstack1, 6, 42, true ) ) {
+					return null;
+				}
+			} else {
+				// Shift-click single items only
+				if ( itemstack1.stackSize == 1 ) {
+					for ( int i = 0; i < 6; i++ ) {
+						final Slot shiftedInSlot = ( ( Slot ) inventorySlots.get( i ) );
+						if ( !shiftedInSlot.getHasStack() && shiftedInSlot.isItemValid( itemstack1 ) )
+							mergeItemStack( itemstack1, i, i + 1, false );
+					}
+				}
+			}
+			// ...till here
+
+			if ( itemstack1.stackSize == 0 ) {
+				slot.putStack( ( ItemStack ) null );
+			} else {
+				slot.onSlotChanged();
+			}
+
+			if ( itemstack1.stackSize == itemstack.stackSize ) {
+				return null;
+			}
+
+			slot.onPickupFromSlot( player, itemstack1 );
+		}
+
+		return itemstack;
 	}
 
 }
