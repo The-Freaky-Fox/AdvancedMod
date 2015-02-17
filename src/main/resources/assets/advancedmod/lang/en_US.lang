@@ -6,3 +6,8 @@ tile.camoMine.name=Camo Mine
 keys.advancedmod.category=Advanced Mod
 keys.advancedmod.explode=Explode
 keys.advancedmod.explodebig=Big Explosion
+
+# Gui stuff
+gui.advancedmod.camoMine.timer=Timer: %s ticks
+gui.advancedmod.camoMine.button.reset=Reset
+gui.advancedmod.camoMine.button.restart=Restart

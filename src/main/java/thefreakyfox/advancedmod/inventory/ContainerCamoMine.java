@@ -1,15 +1,21 @@
 package thefreakyfox.advancedmod.inventory;
 
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import thefreakyfox.advancedmod.tileentity.TileEntityCamoMine;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 
 public class ContainerCamoMine extends ContainerAdvancedMod {
 
 	private final TileEntityCamoMine te;
+	private int lastTimer = -1;
 
 	public ContainerCamoMine( InventoryPlayer playerInventory, TileEntityCamoMine te ) {
 
@@ -27,6 +33,27 @@ public class ContainerCamoMine extends ContainerAdvancedMod {
 	@Override
 	public boolean canInteractWith( EntityPlayer player ) {
 		return te.isUseableByPlayer( player );
+	}
+
+	@Override
+	public void detectAndSendChanges() {
+		super.detectAndSendChanges();
+		if ( lastTimer != te.getTimer() ) {
+			for ( final ICrafting crafter : ( List <ICrafting> ) crafters ) {
+				crafter.sendProgressBarUpdate( this, 0, te.getTimer() );
+			}
+			lastTimer = te.getTimer();
+		}
+	}
+
+	@SideOnly( Side.CLIENT )
+	@Override
+	public void updateProgressBar( int id, int value ) {
+		super.updateProgressBar( id, value );
+		switch ( id ) {
+			case 0:
+				te.setTimer( value );
+		}
 	}
 
 	@Override

@@ -35,6 +35,21 @@ public class TileEntityCamoMine extends TileEntityAdvancedMod implements ISidedI
 		}
 	}
 
+	public void setTimer( int value ) {
+		timer = value;
+	}
+
+	public int getTimer() {
+		return timer;
+	}
+
+	@Override
+	public void onGuiButtonPress( int id ) {
+		if ( id == 0 ) {
+			timer = 60;
+		}
+	}
+
 	public ItemStack getCamoStack( int side ) {
 		return getStackInSlot( side );
 	}
