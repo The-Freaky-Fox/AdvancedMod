@@ -1,5 +1,7 @@
 package thefreakyfox.advancedmod;
 
+import net.minecraftforge.common.MinecraftForge;
+import thefreakyfox.advancedmod.event.AdvancedModEventHandler;
 import thefreakyfox.advancedmod.init.ModBlocks;
 import thefreakyfox.advancedmod.init.ModTileEntities;
 import thefreakyfox.advancedmod.network.DescriptionHandler;
@@ -8,6 +10,7 @@ import thefreakyfox.advancedmod.proxy.CommonProxy;
 import thefreakyfox.advancedmod.reference.Reference;
 import thefreakyfox.advancedmod.util.LogHelper;
 import thefreakyfox.advancedmod.world.gen.WorldGeneratorFlag;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -36,6 +39,8 @@ public class AdvancedMod {
 		NetworkHandler.init();
 		DescriptionHandler.init();
 		NetworkRegistry.INSTANCE.registerGuiHandler( instance, new GuiHandler() );
+		MinecraftForge.EVENT_BUS.register( new AdvancedModEventHandler() );
+		FMLCommonHandler.instance().bus().register( new AdvancedModEventHandler() );
 		LogHelper.info( "Pre-initialisation complete!" );
 	}
 
