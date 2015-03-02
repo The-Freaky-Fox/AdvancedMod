@@ -27,4 +27,6 @@ public class TileEntityAdvancedMod extends TileEntity {
 
 	public void onGuiButtonPress( int id ) {}
 
+	public void onGuiTextfieldUpdate( int id, String text ) {}
+
 }

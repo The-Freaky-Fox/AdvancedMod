@@ -39,7 +39,7 @@ public class BlockCamoMine extends BlockAdvancedModTileEntity {
 				player.openGui( AdvancedMod.instance, GuiHandler.GuiIDs.CAMO_MINE.ordinal(), world, x, y, z );
 			} else {
 				final TileEntity te = world.getTileEntity( x, y, z );
-				if ( te instanceof TileEntityCamoMine && te != null ) {
+				if ( te instanceof TileEntityCamoMine ) {
 					final TileEntityCamoMine teMine = ( TileEntityCamoMine ) te;
 
 					if ( teMine.getCamoStack( side ) != null ) {

@@ -8,6 +8,7 @@ keys.advancedmod.explode=Explode
 keys.advancedmod.explodebig=Big Explosion
 
 # Gui stuff
+gui.advancedmod.camoMine.target=Target:
 gui.advancedmod.camoMine.timer=Timer: %s ticks
 gui.advancedmod.camoMine.button.reset=Reset
 gui.advancedmod.camoMine.button.restart=Restart

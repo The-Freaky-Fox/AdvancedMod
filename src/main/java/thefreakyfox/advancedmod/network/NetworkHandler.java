@@ -1,6 +1,7 @@
 package thefreakyfox.advancedmod.network;
 
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.world.World;
 import thefreakyfox.advancedmod.reference.Reference;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
@@ -18,6 +19,8 @@ public class NetworkHandler {
 
 		INSTANCE.registerMessage( MessageExplode.class, MessageExplode.class, 0, Side.SERVER );
 		INSTANCE.registerMessage( MessageHandleGuiButtonPress.class, MessageHandleGuiButtonPress.class, 1, Side.SERVER );
+		INSTANCE.registerMessage( MessageHandleTextUpdate.class, MessageHandleTextUpdate.class, 2, Side.SERVER );
+		INSTANCE.registerMessage( MessageHandleTextUpdate.class, MessageHandleTextUpdate.class, 3, Side.CLIENT );
 	}
 
 	public static void sendToServer( IMessage message ) {
@@ -30,6 +33,17 @@ public class NetworkHandler {
 
 	public static void sendToAllAround( IMessage message, TargetPoint point ) {
 		INSTANCE.sendToAllAround( message, point );
+	}
+
+	/**
+	 * Will send the given packet ot every player within 64 blocks of the XYZ of the XYZ packet.
+	 *
+	 * @param message
+	 * @param world
+	 */
+	public static void sendToAllAround( MessageXYZ message, World world ) {
+		INSTANCE.sendToAllAround( message, new TargetPoint( world.provider.dimensionId, message.x, message.y, message.z,
+				64.0D ) );
 	}
 
 	public static void snedToAll( IMessage message ) {

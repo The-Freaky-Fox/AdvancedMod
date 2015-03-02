@@ -20,6 +20,7 @@ import cpw.mods.fml.common.network.ByteBufUtils;
 public class TileEntityCamoMine extends TileEntityAdvancedMod implements ISidedInventory {
 
 	private int timer = 60;
+	private String target = "";
 	private final ItemStack[] camoStacks = new ItemStack[6];
 
 	@Override
@@ -29,14 +30,28 @@ public class TileEntityCamoMine extends TileEntityAdvancedMod implements ISidedI
 		if ( timer == 0 && !worldObj.isRemote ) {
 			final List <Entity> entities = worldObj.getEntitiesWithinAABB( EntityPlayer.class,
 					AxisAlignedBB.getBoundingBox( xCoord - 1, yCoord - 1, zCoord - 1, xCoord + 2, yCoord + 2, zCoord + 2 ) );
-			if ( entities.size() > 0 ) {
-				worldObj.createExplosion( null, xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, 3.0F, true );
+			for ( final Entity entity : entities ) {
+				if ( target.equals( "" ) || entity.getCommandSenderName().equalsIgnoreCase( target ) ) {
+					worldObj.createExplosion( null, xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, 3.0F, true );
+					break;
+				}
 			}
 		}
 	}
 
+
+	public String getTarget() {
+		return target;
+	}
+
+	public void setTarget( String target ) {
+		this.target = target;
+		markDirty();
+	}
+
 	public void setTimer( int value ) {
 		timer = value;
+		markDirty();
 	}
 
 	public int getTimer() {
@@ -46,7 +61,19 @@ public class TileEntityCamoMine extends TileEntityAdvancedMod implements ISidedI
 	@Override
 	public void onGuiButtonPress( int id ) {
 		if ( id == 0 ) {
-			timer = 60;
+			if ( timer == -1 ) { // if not armed, start arming.
+				setTimer( 60 );
+			} else {
+				// if armed, stop being armed.
+				setTimer( -1 );
+			}
+		}
+	}
+
+	@Override
+	public void onGuiTextfieldUpdate( int id, String text ) {
+		if ( id == 0 ) {
+			setTarget( text );
 		}
 	}
 
@@ -75,6 +102,7 @@ public class TileEntityCamoMine extends TileEntityAdvancedMod implements ISidedI
 	public void writeToNBT( NBTTagCompound tag ) {
 		super.writeToNBT( tag );
 		tag.setInteger( "timer", timer );
+		tag.setString( "target", target );
 
 		final NBTTagList camoStackTag = new NBTTagList();
 
@@ -94,6 +122,7 @@ public class TileEntityCamoMine extends TileEntityAdvancedMod implements ISidedI
 	public void readFromNBT( NBTTagCompound tag ) {
 		super.readFromNBT( tag );
 		timer = tag.getInteger( "timer" );
+		target = tag.getString( "target" );
 
 		Arrays.fill( camoStacks, null );
 		final NBTTagList camoStackTag = tag.getTagList( "camoStacks", 10 );

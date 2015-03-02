@@ -1,9 +1,9 @@
 package thefreakyfox.advancedmod.proxy;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import thefreakyfox.advancedmod.client.handler.KeyInputEventHandler;
 import thefreakyfox.advancedmod.client.settings.KeyBindings;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -36,7 +36,8 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public EntityPlayer getClientPlayer() {
-		return Minecraft.getMinecraft().thePlayer;
+		// return Minecraft.getMinecraft().thePlayer;
+		return FMLClientHandler.instance().getClientPlayerEntity();
 	}
 
 }

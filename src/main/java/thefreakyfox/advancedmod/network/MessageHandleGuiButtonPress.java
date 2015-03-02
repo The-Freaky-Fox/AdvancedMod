@@ -6,32 +6,26 @@ import net.minecraft.tileentity.TileEntity;
 import thefreakyfox.advancedmod.tileentity.TileEntityAdvancedMod;
 
 
-public class MessageHandleGuiButtonPress extends MessageBase <MessageHandleGuiButtonPress> {
+public class MessageHandleGuiButtonPress extends MessageXYZ <MessageHandleGuiButtonPress> {
 
-	private int x, y, z, id;
+	private int id;
 
 	public MessageHandleGuiButtonPress() {}
 
 	public MessageHandleGuiButtonPress( TileEntityAdvancedMod te, int id ) {
-		x = te.xCoord;
-		y = te.yCoord;
-		z = te.zCoord;
+		super( te );
 		this.id = id;
 	}
 
 	@Override
 	public void fromBytes( ByteBuf buf ) {
-		x = buf.readInt();
-		y = buf.readInt();
-		z = buf.readInt();
+		super.fromBytes( buf );
 		id = buf.readInt();
 	}
 
 	@Override
 	public void toBytes( ByteBuf buf ) {
-		buf.writeInt( x );
-		buf.writeInt( y );
-		buf.writeInt( z );
+		super.toBytes( buf );
 		buf.writeInt( id );
 	}
 
@@ -40,8 +34,8 @@ public class MessageHandleGuiButtonPress extends MessageBase <MessageHandleGuiBu
 
 	@Override
 	public void handleServerSide( MessageHandleGuiButtonPress message, EntityPlayer player ) {
-		final TileEntity te = player.worldObj.getTileEntity( message.x, message.y, message.z );
-		if ( te instanceof TileEntityAdvancedMod && te != null ) {
+		final TileEntity te = message.getTileEntity( player.worldObj );
+		if ( te instanceof TileEntityAdvancedMod ) {
 			( ( TileEntityAdvancedMod ) te ).onGuiButtonPress( message.id );
 		}
 	}

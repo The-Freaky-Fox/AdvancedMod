@@ -33,4 +33,6 @@ public abstract class GuiAdvancedMod extends GuiContainer {
 		fontRendererObj.drawString( I18n.format( "container.inventory" ), 8, ySize - 96 + 2, 4210752 );
 	}
 
+	public void onTextfieldUpdate( int id ) {}
+
 }
