@@ -32,8 +32,7 @@ public class BlockCamoMine extends BlockAdvancedModTileEntity {
 
 
 	@Override
-	public boolean onBlockActivated( World world, int x, int y, int z, EntityPlayer player, int side, float hitX,
-			float hitY, float hitZ ) {
+	public boolean onBlockActivated( World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ ) {
 		if ( !world.isRemote ) {
 			if ( player.isSneaking() ) {
 				player.openGui( AdvancedMod.instance, GuiHandler.GuiIDs.CAMO_MINE.ordinal(), world, x, y, z );
@@ -49,7 +48,7 @@ public class BlockCamoMine extends BlockAdvancedModTileEntity {
 						world.spawnEntityInWorld( itemEntity );
 					} else {
 						final ItemStack playerItem = player.getCurrentEquippedItem();
-						if ( playerItem != null ) {
+						if ( playerItem != null && teMine.isItemValidForSlot( side, playerItem ) ) {
 							final ItemStack camoStack = playerItem.splitStack( 1 );
 							teMine.setCamoStack( camoStack, side );
 						}

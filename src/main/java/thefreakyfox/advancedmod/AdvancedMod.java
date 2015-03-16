@@ -1,5 +1,7 @@
 package thefreakyfox.advancedmod;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import thefreakyfox.advancedmod.event.AdvancedModEventHandler;
 import thefreakyfox.advancedmod.init.ModBlocks;
@@ -8,6 +10,7 @@ import thefreakyfox.advancedmod.network.DescriptionHandler;
 import thefreakyfox.advancedmod.network.NetworkHandler;
 import thefreakyfox.advancedmod.proxy.CommonProxy;
 import thefreakyfox.advancedmod.reference.Reference;
+import thefreakyfox.advancedmod.tileentity.TileEntityCamoMine;
 import thefreakyfox.advancedmod.util.LogHelper;
 import thefreakyfox.advancedmod.world.gen.WorldGeneratorFlag;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -16,6 +19,9 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInterModComms;
+import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
+import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -41,6 +47,7 @@ public class AdvancedMod {
 		NetworkRegistry.INSTANCE.registerGuiHandler( instance, new GuiHandler() );
 		MinecraftForge.EVENT_BUS.register( new AdvancedModEventHandler() );
 		FMLCommonHandler.instance().bus().register( new AdvancedModEventHandler() );
+		FMLInterModComms.sendMessage( Reference.MOD_ID, "camoMineBlacklist", new ItemStack( Blocks.stone ) );
 		LogHelper.info( "Pre-initialisation complete!" );
 	}
 
@@ -56,4 +63,27 @@ public class AdvancedMod {
 		LogHelper.info( "Post-initialisation complete!" );
 	}
 
+	@EventHandler
+	public void onIMCMessages( IMCEvent event ) {
+		LogHelper.info( "Receiving IMC" );
+		for ( final IMCMessage message : event.getMessages() ) {
+			if ( message.key.equalsIgnoreCase( "camoMineBlacklist" ) ) {
+				if ( message.isItemStackMessage() ) {
+					final ItemStack blacklistedStack = message.getItemStackValue();
+					if ( blacklistedStack.getItem() != null ) {
+						TileEntityCamoMine.camouflageBlacklist.add( blacklistedStack );
+						LogHelper.info( String.format( "Mod %s added %s to be blacklist as camouflage for the Camo Mine", message.getSender(),
+								blacklistedStack.toString() ) );
+					} else {
+						throw new IllegalStateException( String.format( "ItemStack tried to be used in registry by the mod %s has a null item", message.getSender() ) );
+					}
+				} else {
+					LogHelper.warn( String.format( "Mod %s sent a non-ItemStack message, where an ItemStack message was expected.", message.getSender() ) );
+				}
+
+			} else {
+				LogHelper.warn( String.format( "Mod %s used an invalid IMC key: %s", message.getSender(), message.key ) );
+			}
+		}
+	}
 }

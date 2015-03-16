@@ -2,6 +2,7 @@ package thefreakyfox.advancedmod.tileentity;
 
 import io.netty.buffer.ByteBuf;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class TileEntityCamoMine extends TileEntityAdvancedMod implements ISidedI
 	private int timer = 60;
 	private String target = "";
 	private final ItemStack[] camoStacks = new ItemStack[6];
+	public static List <ItemStack> camouflageBlacklist = new ArrayList <ItemStack>();
 
 	@Override
 	public void updateEntity() {
@@ -243,8 +245,7 @@ public class TileEntityCamoMine extends TileEntityAdvancedMod implements ISidedI
 	 */
 	@Override
 	public boolean isUseableByPlayer( EntityPlayer player ) {
-		return worldObj.getTileEntity( xCoord, yCoord, zCoord ) != this ? false : player.getDistanceSq( xCoord + 0.5D,
-				yCoord + 0.5D, zCoord + 0.5D ) <= 64.0D;
+		return worldObj.getTileEntity( xCoord, yCoord, zCoord ) != this ? false : player.getDistanceSq( xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D ) <= 64.0D;
 	}
 
 	@Override
@@ -259,6 +260,10 @@ public class TileEntityCamoMine extends TileEntityAdvancedMod implements ISidedI
 	 */
 	@Override
 	public boolean isItemValidForSlot( int slot, ItemStack stack ) {
+		for ( final ItemStack blacklistedStack : camouflageBlacklist ) {
+			if ( blacklistedStack.isItemEqual( stack ) )
+				return false;
+		}
 		return stack != null && stack.getItem() instanceof ItemBlock;
 	}
 
