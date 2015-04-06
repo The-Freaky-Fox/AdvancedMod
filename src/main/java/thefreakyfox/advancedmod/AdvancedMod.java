@@ -3,6 +3,9 @@ package thefreakyfox.advancedmod;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
+import thaumcraft.api.ThaumcraftApi;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
 import thefreakyfox.advancedmod.event.AdvancedModEventHandler;
 import thefreakyfox.advancedmod.init.ModBlocks;
 import thefreakyfox.advancedmod.init.ModTileEntities;
@@ -14,9 +17,11 @@ import thefreakyfox.advancedmod.tileentity.TileEntityCamoMine;
 import thefreakyfox.advancedmod.util.Log;
 import thefreakyfox.advancedmod.world.gen.WorldGeneratorFlag;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms;
@@ -50,6 +55,15 @@ public class AdvancedMod {
 		FMLInterModComms.sendMessage( Reference.MOD_ID, "camoMineBlacklist", new ItemStack( Blocks.stone ) );
 		FMLInterModComms.sendMessage( "Waila", "register", "thefreakyfox.advancedmod.thirdparty.waila.Waila.onWailaCall" );
 		Log.info( "Pre-initialisation complete!" );
+
+		if ( Loader.isModLoaded( "Thaumcraft" ) ) {
+			loadThaumcraft();
+		}
+	}
+
+	@Optional.Method( modid = "Thaumcraft" )
+	private void loadThaumcraft() {
+		ThaumcraftApi.registerObjectTag( new ItemStack( ModBlocks.dutchFlag ), new AspectList().add( Aspect.AIR, 5 ) );
 	}
 
 	@EventHandler
