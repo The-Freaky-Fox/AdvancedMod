@@ -12,3 +12,9 @@ gui.advancedmod.camoMine.target=Target:
 gui.advancedmod.camoMine.timer=Timer: %s ticks
 gui.advancedmod.camoMine.button.reset=Reset
 gui.advancedmod.camoMine.button.restart=Restart
+
+# Waila stuff
+advancedmod.waila.camoMine.target=Target:
+advancedMod.waila.camoMine.primed=Primed
+advancedMod.waila.camoMine.notPrimed=Not primed
+advancedMod.waila.camoMine.primingIn=Priming in:

@@ -48,6 +48,7 @@ public class AdvancedMod {
 		MinecraftForge.EVENT_BUS.register( new AdvancedModEventHandler() );
 		FMLCommonHandler.instance().bus().register( new AdvancedModEventHandler() );
 		FMLInterModComms.sendMessage( Reference.MOD_ID, "camoMineBlacklist", new ItemStack( Blocks.stone ) );
+		FMLInterModComms.sendMessage( "Waila", "register", "thefreakyfox.advancedmod.thirdparty.waila.Waila.onWailaCall" );
 		Log.info( "Pre-initialisation complete!" );
 	}
 
@@ -72,8 +73,7 @@ public class AdvancedMod {
 					final ItemStack blacklistedStack = message.getItemStackValue();
 					if ( blacklistedStack.getItem() != null ) {
 						TileEntityCamoMine.camouflageBlacklist.add( blacklistedStack );
-						Log.info( String.format( "Mod %s added %s to be blacklist as camouflage for the Camo Mine", message.getSender(),
-								blacklistedStack.toString() ) );
+						Log.info( String.format( "Mod %s added %s to be blacklist as camouflage for the Camo Mine", message.getSender(), blacklistedStack.toString() ) );
 					} else {
 						throw new IllegalStateException( String.format( "ItemStack tried to be used in registry by the mod %s has a null item", message.getSender() ) );
 					}

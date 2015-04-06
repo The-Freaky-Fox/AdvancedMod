@@ -63,7 +63,7 @@ public class BlockCamoMine extends BlockAdvancedModTileEntity {
 	@Override
 	public IIcon getIcon( IBlockAccess world, int x, int y, int z, int side ) {
 		final TileEntity te = world.getTileEntity( x, y, z );
-		if ( te instanceof TileEntityCamoMine && te != null ) {
+		if ( te instanceof TileEntityCamoMine ) {
 			final TileEntityCamoMine teMine = ( TileEntityCamoMine ) te;
 			final ItemStack stack = teMine.getCamoStack( side );
 			if ( stack != null && stack.getItem() instanceof ItemBlock ) {
